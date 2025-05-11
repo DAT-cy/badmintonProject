@@ -4,10 +4,12 @@ import badminton_project.config.response.CommonException;
 import badminton_project.config.response.ErrorCode;
 import badminton_project.config.app.JwtService;
 import badminton_project.module.users.dto.request.LoginRequest;
+import badminton_project.module.users.dto.request.SignUpRequest;
 import badminton_project.module.users.dto.response.LoginResponse;
 import badminton_project.module.users.entity.Role;
 import badminton_project.module.users.entity.User;
 import badminton_project.module.users.repository.UserMapper;
+import badminton_project.module.users.repository.UserRepository;
 import badminton_project.module.users.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -60,6 +63,31 @@ public class UserServiceImpl implements UserService {
             throw new CommonException(ErrorCode.WRONG_PASSWORD);
         }
     }
+    @Override
+    public Boolean signUp(SignUpRequest request) {
+        User user = saveUser(request);
+
+
+        return null;
+    }
+
+    private User saveUser(SignUpRequest request) {
+        User user = new User();
+        user.setUsername(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setEnable(true);
+        user.setIsDeleted(false);
+        return user;
+    }
+
+
+
+
+
+
+
+
+
 
     @Override
     public void initAdminUser() {
@@ -80,4 +108,6 @@ public class UserServiceImpl implements UserService {
             userMapper.insertUser(user);
         }
     }
+
+
 } 

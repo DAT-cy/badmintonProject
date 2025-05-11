@@ -2,6 +2,7 @@ package badminton_project.module.users.entity;
 
 import badminton_project.config.app.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
